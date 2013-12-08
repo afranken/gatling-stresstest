@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.afranken</groupId>
+  <artifactId>gatling-stresstest</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <description>Gatling based stress tests</description>
+
+  <repositories>
+    <repository>
+      <id>excilys</id>
+      <name>Excilys Repository</name>
+      <url>http://repository.excilys.com/content/groups/public</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>excilys</id>
+      <name>Excilys Repository</name>
+      <url>http://repository.excilys.com/content/groups/public</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <gatling.version>2.0.0-M3a</gatling.version>
+
+    <!-- protocol to use for requests. Default if not set: http -->
+    <protocol>http</protocol>
+    <!-- host to use for requests. Default if not set: localhost -->
+    <host>www.apple.com</host>
+    <!--port to use for requests. Default if not set: 80 -->
+    <port>80</port>
+    <!-- number of threads to use for the test. Default if not set: 1 -->
+    <users>5</users>
+    <!-- rampup / rampdown time in seconds. Number of threads will be ramped up and down in this time. Default if not set: 0 -->
+    <rampup>60</rampup>
+    <!-- duration of the test in minutes. Default if not set: 1 -->
+    <duration>3</duration>
+    <!-- fail the build if any request takes longer than this, in seconds. Default if not set: 2000 -->
+    <maxresptime>2000</maxresptime>
+    <!-- fail the build if less than this percentage of requests is successful. Default is: 100 -->
+    <successpercent>100</successpercent>
+    <!-- Name of the test to run -->
+    <testname>CsvSimulation</testname>
+
+    <!-- urilist CSV to use for the CSV based test.
+    Path must be relative to plugin setting "dataFolder". Default if not set: urilist.csv -->
+    <urilist>urilist.csv</urilist>
+
+    <!-- sitemap URI to use for the Sitemap based test.
+     Path must be relative to protocol/host/port -->
+    <sitemap>/sitemap/</sitemap>
+    <!-- Css Selector that extracts HREFs from the sitemap. See http://jodd.org/doc/csselly/ -->
+    <cssselector>div[class~=column] > ul > li > a</cssselector>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.gatling.highcharts</groupId>
+      <artifactId>gatling-charts-highcharts</artifactId>
+      <version>${gatling.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <!--
+        plugin execution in separate profile so that a simple "mvn package / install" does not execute a performance test.
+      -->
+      <id>performance</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.gatling</groupId>
+            <artifactId>gatling-maven-plugin</artifactId>
+            <version>${gatling.version}</version>
+            <executions>
+              <execution>
+                <phase>test</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <!-- Default values -->
+                  <!--<configDir>src/test/resources</configDir>
+                  <dataFolder>src/test/resources/data</dataFolder>
+                  <resultsFolder>target/gatling/results</resultsFolder>
+                  <requestBodiesFolder>src/test/resources/request-bodies</requestBodiesFolder>
+                  <simulationsFolder>src/test/scala</simulationsFolder>
+                  <includes>
+                          <include>**/*.scala</include>
+                  </includes>-->
+                  <simulationClass>basic.${testname}</simulationClass>
+                  <jvmArgs>
+                    <jvmArg>-Dprotocol=${protocol}</jvmArg>
+                    <jvmArg>-Dhost=${host}</jvmArg>
+                    <jvmArg>-Dport=${port}</jvmArg>
+                    <jvmArg>-Dsitemap=${sitemap}</jvmArg>
+                    <jvmArg>-Dcssselector=${cssselector}</jvmArg>
+                    <jvmArg>-Dusers=${users}</jvmArg>
+                    <jvmArg>-Drampup=${rampup}</jvmArg>
+                    <jvmArg>-Dduration=${duration}</jvmArg>
+                    <jvmArg>-Durilist=${urilist}</jvmArg>
+                    <jvmArg>-Dmaxresptime=${maxresptime}</jvmArg>
+                    <jvmArg>-Dsuccesspercent=${successpercent}</jvmArg>
+                  </jvmArgs>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
