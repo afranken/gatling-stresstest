@@ -1,5 +1,9 @@
 *.class
 
+# maven: #
+target/
+overlays/
+
 # Package Files #
 *.jar
 *.war
