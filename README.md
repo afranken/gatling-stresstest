@@ -23,7 +23,7 @@ Overwrite parameters either permanently in the `<properties>` element of the [po
 
 ##CsvSimulation
 The default test.
-Loads `src/test/resources/data/urilist.csv` and loops over the URIs.
+Loads a CSV file and loops over the URIs.
 
 **Configurable Parameters:**
 
