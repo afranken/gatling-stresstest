@@ -7,7 +7,7 @@ All tests run against "[spiegel.de](http://www.spiegel.de)" by default.
 ##Run the test
 
 Start with `mvn clean verify -Pperformance`
-Overwrite parameters either in the `<properties>` element of the [pom.xml](<pom.xml>) or by passing system properties, e.g. `mvn clean verify -Pperformance -Dtestname=HtmlpageSimulation -Dduration=5`
+Overwrite parameters either permanently in the `<properties>` element of the [pom.xml](<pom.xml>) or temporarily by passing system properties, e.g. `mvn clean verify -Pperformance -Dtestname=HtmlpageSimulation -Dduration=5`
 
 **Configurable Parameters:**
 
@@ -27,15 +27,16 @@ Loads `src/test/resources/data/urilist.csv` and loops over the URIs.
 
 **Configurable Parameters:**
 
-* `urilistcsv` => name of the CSV file to read the URIs from. Default: "urilist.csv"
+* `urilistcsv` => name of the CSV file to read the URIs from. Path must be relative to the configured "dataFolder". Default: "urilist.csv"
 
 ##HtmlpageSimulation
-Loads a HTML page, selects links with a CssSelector, and loops over the the URIs.
+Loads a HTML page, selects HTML Elements with a CssSelector, and loops over the the URIs found in the linkattribute.
 
 **Configurable Parameters:**
 
 * `htmlpage` => relative URI to select links from. Default: "schlagzeilen/"
-* `cssselector` => [Csselly](http://jodd.org/doc/csselly/) style CSS Selector to select the links with. Default: "div[class~=schlagzeilen-content] > a"
+* `cssselector` => [Csselly](http://jodd.org/doc/csselly/) style CSS Selector to select the HTML Elements with. Default: "div[class~=schlagzeilen-content] > a"
+* `linkattribute` => The attribute the links are taken from. Default: "href"
 
 ##SitemapSimulation
 Loads a Sitemap XML, selects links with a XPath, and loops over the URIs.

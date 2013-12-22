@@ -14,13 +14,14 @@ class HtmlpageSimulation extends SimulationBase {
   //read settings
   val htmlpage: String = Option(System.getProperty("htmlpage")).getOrElse("schlagzeilen/")
   val cssselector: String = Option(System.getProperty("cssselector")).getOrElse("div[class~=schlagzeilen-content] > a")
+  val linkattribute: String = Option(System.getProperty("linkattribute")).getOrElse("href")
 
   //create scenario, requests are executed for the configured duration for all URIs found in the Sitemap
   val scn = scenario("HtmlPage")
     //request sitemap, save all links found in URI_LIST
     .exec(http(htmlpage)
     .get(htmlpage)
-    .check(css(cssselector, "href").findAll.exists.saveAs("URI_LIST"))
+    .check(css(cssselector, linkattribute).findAll.exists.saveAs("URI_LIST"))
     )
     .exec((s: Session) => {
     logger.debug("URIs found: {}", s.attributes.get("URI_LIST"))

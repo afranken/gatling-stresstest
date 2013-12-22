@@ -52,11 +52,13 @@
     Path must be relative to plugin setting "dataFolder". Default if not set: urilist.csv -->
     <urilistcsv>urilist.csv</urilistcsv>
 
-    <!-- htmlpage URI to use for the Sitemap based test.
+    <!-- htmlpage URI to use.
      Path must be relative to protocol/host/port -->
     <htmlpage>schlagzeilen/</htmlpage>
-    <!-- Css Selector that extracts HREFs from the sitemap. See http://jodd.org/doc/csselly/ -->
+    <!-- Css Selector that selects elements from the page. See http://jodd.org/doc/csselly/ -->
     <cssselector>div[class~=schlagzeilen-content] > a</cssselector>
+    <!-- The attribute the link is taken from  -->
+    <linkattribute>href</linkattribute>
 
     <!-- sitemap URI to use for the Sitemap based test.
     Path must be relative to protocol/host/port -->
@@ -122,6 +124,7 @@
                     <jvmArg>-Durilistcsv=${urilistcsv}</jvmArg>
                     <jvmArg>-Dhtmlpage=${htmlpage}</jvmArg>
                     <jvmArg>-Dcssselector=${cssselector}</jvmArg>
+                    <jvmArg>-Dlinkattribute=${linkattribute}</jvmArg>
                     <jvmArg>-Dsitemap=${sitemap}</jvmArg>
                     <jvmArg>-Dxpathselector=${xpathselector}</jvmArg>
                     <jvmArg>-Dusers=${users}</jvmArg>
