@@ -116,7 +116,7 @@
                   <includes>
                           <include>**/*.scala</include>
                   </includes>-->
-                  <simulationClass>basic.${testname}</simulationClass>
+                  <simulationClass>stresstest.${testname}</simulationClass>
                   <jvmArgs>
                     <jvmArg>-Dprotocol=${protocol}</jvmArg>
                     <jvmArg>-Dhost=${host}</jvmArg>
