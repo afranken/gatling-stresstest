@@ -22,8 +22,7 @@ class CsvSimulation extends SimulationBase {
   .during(testduration minutes) {
     feed(accessLog)
     .exec(http("${uri}")
-      .get("${uri}")
-      .check(status.is(200)))
+      .get("${uri}"))
   }
 
   //actually start test

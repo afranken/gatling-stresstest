@@ -32,15 +32,15 @@
     <!-- protocol to use for requests. Default if not set: http -->
     <protocol>http</protocol>
     <!-- host to use for requests. Default if not set: localhost -->
-    <host>www.apple.com</host>
+    <host>www.spiegel.de</host>
     <!--port to use for requests. Default if not set: 80 -->
     <port>80</port>
     <!-- number of threads to use for the test. Default if not set: 1 -->
     <users>5</users>
     <!-- rampup / rampdown time in seconds. Number of threads will be ramped up and down in this time. Default if not set: 0 -->
-    <rampup>60</rampup>
+    <rampup>10</rampup>
     <!-- duration of the test in minutes. Default if not set: 1 -->
-    <duration>3</duration>
+    <duration>1</duration>
     <!-- fail the build if any request takes longer than this, in seconds. Default if not set: 2000 -->
     <maxresptime>2000</maxresptime>
     <!-- fail the build if less than this percentage of requests is successful. Default is: 100 -->
@@ -52,11 +52,17 @@
     Path must be relative to plugin setting "dataFolder". Default if not set: urilist.csv -->
     <urilist>urilist.csv</urilist>
 
-    <!-- sitemap URI to use for the Sitemap based test.
+    <!-- htmlpage URI to use for the Sitemap based test.
      Path must be relative to protocol/host/port -->
-    <sitemap>/sitemap/</sitemap>
+    <htmlpage>schlagzeilen/</htmlpage>
     <!-- Css Selector that extracts HREFs from the sitemap. See http://jodd.org/doc/csselly/ -->
-    <cssselector>div[class~=column] > ul > li > a</cssselector>
+    <cssselector>div[class~=schlagzeilen-content] > a</cssselector>
+
+    <!-- sitemap URI to use for the Sitemap based test.
+    Path must be relative to protocol/host/port -->
+    <sitemap>sitemap.xml</sitemap>
+    <!--XPath selector that extracts links from a XML sitemap-->
+    <xpathselector>/sm:sitemapindex/sm:sitemap/sm:loc</xpathselector>
   </properties>
 
   <dependencies>
@@ -64,6 +70,18 @@
       <groupId>io.gatling.highcharts</groupId>
       <artifactId>gatling-charts-highcharts</artifactId>
       <version>${gatling.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.8</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>1.6</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -109,6 +127,7 @@
                     <jvmArg>-Durilist=${urilist}</jvmArg>
                     <jvmArg>-Dmaxresptime=${maxresptime}</jvmArg>
                     <jvmArg>-Dsuccesspercent=${successpercent}</jvmArg>
+                    <jvmArg>-Dxpathselector=${xpathselector}</jvmArg>
                   </jvmArgs>
                 </configuration>
               </execution>
