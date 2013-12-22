@@ -12,10 +12,10 @@ import assertions._
 class CsvSimulation extends SimulationBase {
 
   //read specific settings
-  val urilist: String = Option(System.getProperty("urilist")).getOrElse("urilist.csv")
+  val urilistcsv: String = Option(System.getProperty("urilistcsv")).getOrElse("urilist.csv")
 
   //iterate over the URIs found in the CSV
-  val accessLog = csv(urilist).circular
+  val accessLog = csv(urilistcsv).circular
 
   //create scenario, requests are executed for the configured duration for all URIs found in the CSV file
   val scn = scenario("CSV Test")

@@ -50,7 +50,7 @@
 
     <!-- urilist CSV to use for the CSV based test.
     Path must be relative to plugin setting "dataFolder". Default if not set: urilist.csv -->
-    <urilist>urilist.csv</urilist>
+    <urilistcsv>urilist.csv</urilistcsv>
 
     <!-- htmlpage URI to use for the Sitemap based test.
      Path must be relative to protocol/host/port -->
@@ -119,15 +119,16 @@
                     <jvmArg>-Dprotocol=${protocol}</jvmArg>
                     <jvmArg>-Dhost=${host}</jvmArg>
                     <jvmArg>-Dport=${port}</jvmArg>
-                    <jvmArg>-Dsitemap=${sitemap}</jvmArg>
+                    <jvmArg>-Durilistcsv=${urilistcsv}</jvmArg>
+                    <jvmArg>-Dhtmlpage=${htmlpage}</jvmArg>
                     <jvmArg>-Dcssselector=${cssselector}</jvmArg>
+                    <jvmArg>-Dsitemap=${sitemap}</jvmArg>
+                    <jvmArg>-Dxpathselector=${xpathselector}</jvmArg>
                     <jvmArg>-Dusers=${users}</jvmArg>
                     <jvmArg>-Drampup=${rampup}</jvmArg>
                     <jvmArg>-Dduration=${duration}</jvmArg>
-                    <jvmArg>-Durilist=${urilist}</jvmArg>
                     <jvmArg>-Dmaxresptime=${maxresptime}</jvmArg>
                     <jvmArg>-Dsuccesspercent=${successpercent}</jvmArg>
-                    <jvmArg>-Dxpathselector=${xpathselector}</jvmArg>
                   </jvmArgs>
                 </configuration>
               </execution>
