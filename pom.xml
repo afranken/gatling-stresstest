@@ -26,7 +26,6 @@
   </pluginRepositories>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <gatling.version>2.0.0-M3a</gatling.version>
 
     <!-- protocol to use for requests. Default if not set: http -->
