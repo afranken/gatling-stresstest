@@ -1,7 +1,7 @@
-gatling-stresstest
+Gatling Stresstest
 ==================
 
-A configurable website stress test based on gatling.
+A fully configurable website stress test based on gatling.
 All tests run against "[spiegel.de](http://www.spiegel.de)" by default.
 
 ##Run the test
