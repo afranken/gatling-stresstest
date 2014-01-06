@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream
 import org.apache.commons.io.IOUtils
 import org.apache.commons.codec.binary.StringUtils
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
+import java.nio.ByteBuffer
 
 /**
  * Performance Test that requests URIs read from a sitemap
@@ -105,6 +106,12 @@ class SitemapSimulation extends SimulationBase {
           StringUtils.newString(getResponseBodyAsBytes(), charset)
         } else {
           response.getResponseBody(charset)
+        }
+
+        override def getResponseBodyAsByteBuffer() = if(isGzipped) {
+          ByteBuffer.wrap(getResponseBodyAsBytes())
+        } else {
+          response.getResponseBodyAsByteBuffer
         }
       }
   }
