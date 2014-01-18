@@ -25,10 +25,18 @@ class SitemapSimulation extends SimulationBase {
   //create scenario, requests are executed for the configured duration for all URIs found in the Sitemap
   val scn = scenario("Sitemap")
     //request sitemap, save all links found in URI_LIST
-    .exec(http(sitemap)
-    .get(sitemap)
-    .transformResponse(transformGzippedResponse)
-    .check(xpath(xpathselector, List("sm" -> "http://www.sitemaps.org/schemas/sitemap/0.9")).findAll.whatever.saveAs("URI_LIST"))
+    .exec(
+      http(sitemap).get(sitemap)
+      .transformResponse(transformGzippedResponse)
+      .check(
+        xpath(xpathselector, List("sm" -> "http://www.sitemaps.org/schemas/sitemap/0.9"))
+        .findAll
+        //strip out hostname and protocol since the value saved to URI_LIST is later used as the name of the request
+        //which in turn is used for a file name. The name may be longer than 255 characters if the URI is long.
+        .transform(_.map(_.map(relativeUri)))
+        .whatever
+        .saveAs("URI_LIST")
+      )
     )
     .exec((s: Session) => {
     logger.debug("URIs found: {}", s.attributes.get("URI_LIST"))
@@ -38,8 +46,9 @@ class SitemapSimulation extends SimulationBase {
     //crawl list for configured amount of time
     during(testduration minutes) {
       exec(foreach("${URI_LIST}", "URI") {
-        exec(http("${URI}")
-          .get("${URI}")
+        val uri = "${URI}"
+        exec(http(uri)
+          .get(uri)
         )
       })
     }
@@ -63,6 +72,41 @@ class SitemapSimulation extends SimulationBase {
       global.successfulRequests.percent.is(successpercent),
       details(baseUrl).responseTime.max.lessThan(maxresptime)
     )
+
+  /**
+   * Get the relative URI from the given URL.
+   * @param source the URL
+   * @return a relative URI
+   */
+  def relativeUri(source: String): String = {
+    if(source.contains("://")) {
+      source.substring(nthOccurrence(source,'/',3))
+    }
+    else {
+      //source was not an absolute URL, return source.
+      source
+    }
+  }
+
+  /**
+   * Find nth occurrence of given char.
+   * @param source String to check
+   * @param c char to find
+   * @param count occurrence of the char to find
+   * @return index of the char
+   */
+  def nthOccurrence(source: String, c: Char, count: Int): Int = {
+    var counter: Int = 0
+    var i: Int = 0
+    while (counter < count) {
+      if (source.charAt(i) == c) {
+        counter += 1
+      }
+      i += 1
+    }
+
+    i
+  }
 
 
   /**
