@@ -45,3 +45,7 @@ Loads a Sitemap XML, selects links with a XPath, and loops over the URIs.
 
 * `sitemap` => relative URI of the Sitemap XML. Default: "sitemap.xml"
 * `xpathselector` => XPath selector to select the links with. Attributes must be prepended with Namespace "sm". Default: "/sm:sitemapindex/sm:sitemap/sm:loc"
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/afranken/gatling-stresstest/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
